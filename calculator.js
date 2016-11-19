@@ -7,15 +7,17 @@ var memory = "";
 function queu(id){
   var num = $("#" + id).text();
   operationSegment += num;
-  $("#screen").html(operationSegment);
+  $("#currentNumber").html(operationSegment);
+  $("#operation").append(num);
 }
 
 //operator clicked
 function op(id){
   opp = $("#" + id).text();
-  $("#screen").html(opp);
+  $("#currentNumber").html(opp);
   fullOperation.push(operationSegment);
   fullOperation.push(opp);
+  $("#operation").append(" " + opp + " ");
   operationSegment = "";
 }
 // Math functions
@@ -27,7 +29,6 @@ function divide(a,b){return a/b;}
 //button cliucks
 
  $(document).ready(function(){
-;
   $('.op').each(function(index, element){
 
     setTimeout(function(){
@@ -52,13 +53,13 @@ function divide(a,b){return a/b;}
 
   $("#ce").click(function(){
     fullOperation.splice(-1);
-    $("screen").html(fullOperation[-1]);
+    $("").html(fullOperation[-1]);
   })
 
   $("#ac").click(function(){
     operationSegment = "";
     fullOperation = "";
-    $("#screen").html("0");
+    $("#currentNumber").html("0");
   })
 
   // solve
@@ -86,6 +87,6 @@ function divide(a,b){return a/b;}
       fullOperation.splice(0,3, num);
       console.log("after operation: " + fullOperation);
     }
-    $("#screen").html(fullOperation);
+    $("#currentNumber").html(fullOperation);
   })
 });
