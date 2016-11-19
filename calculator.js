@@ -1,37 +1,47 @@
-var fullOperation = "";
+var fullOperation = [];
 var operationSegment = "";
 var opp = "";
 var memory = "";
+
+//number clicked
 function queu(id){
   var num = $("#" + id).text();
-  fullOperation += num;
   operationSegment += num;
   $("#screen").html(operationSegment);
 }
+
+//operator clicked
 function op(id){
   opp = $("#" + id).text();
   $("#screen").html(opp);
-  fullOperation += opp;
-  memory = operationSegment;
+  fullOperation.push(operationSegment);
+  fullOperation.push(opp);
   operationSegment = "";
 }
 // Math functions
-function add(a,b){
-  console.log("a: " +a);
-  console.log("b: "+b);
-  console.log(a+b);
-  return a+b;
-}
-function subtract(a,b){
-  return a-b;
-}
-function multiply(a,b){
-  return a*b;
-}
-function divide(a,b){
-  return a/b;
-}
+function add(a,b){return a+b;}
+function subtract(a,b){return a-b;}
+function multiply(a,b){return a*b;}
+function divide(a,b){return a/b;}
+
+//button cliucks
+
  $(document).ready(function(){
+;
+  $('.op').each(function(index, element){
+
+    setTimeout(function(){
+      element.classList.remove('loading');
+    }, index * 200);
+
+  });
+  $('.num').each(function(index, element){
+
+    setTimeout(function(){
+      element.classList.remove('loading');
+    }, index * 200);
+
+  });
   $(".num").click(function(){
     queu(this.id);
   });
@@ -41,7 +51,8 @@ function divide(a,b){
   });
 
   $("#ce").click(function(){
-
+    fullOperation.splice(-1);
+    $("screen").html(fullOperation[-1]);
   })
 
   $("#ac").click(function(){
@@ -50,30 +61,31 @@ function divide(a,b){
     $("#screen").html("0");
   })
 
+  // solve
   $("#enter").click(function(){
+    fullOperation.push(operationSegment);
     console.log(fullOperation);
-    var arr = fullOperation.split(" ");
 
-    while (arr.length >= 3){
+    while (fullOperation.length >= 3){
       //convert to int
-      arr[0] = parseInt(arr[0]);
-      arr[2] = parseInt(arr[2]);
+      fullOperation[0] = parseInt(fullOperation[0]);
+      fullOperation[2] = parseInt(fullOperation[2]);
       //choose function based on operation
-      if (arr[1] === "+"){
-        var num = add(arr[0], arr[2])
+      if (fullOperation[1] === "+"){
+        var num = add(fullOperation[0], fullOperation[2])
       }
-      else if(arr[1] === "-"){
-        var num = subtract(arr[0], arr[2])
+      else if(fullOperation[1] === "-"){
+        var num = subtract(fullOperation[0], fullOperation[2])
       }
-      else if(arr[1] === "x"){
-        var num = multiply(arr[0], arr[2])
+      else if(fullOperation[1] === "x"){
+        var num = multiply(fullOperation[0], fullOperation[2])
       }
-      else if (arr[1] === "÷"){
-        var num = divide(arr[0], arr[2])
+      else if (fullOperation[1] === "÷"){
+        var num = divide(fullOperation[0], fullOperation[2])
       }
-      arr.splice(0,3, num);
-      console.log("after operation: " + arr);
+      fullOperation.splice(0,3, num);
+      console.log("after operation: " + fullOperation);
     }
-    $("#screen").html(arr);
+    $("#screen").html(fullOperation);
   })
 });

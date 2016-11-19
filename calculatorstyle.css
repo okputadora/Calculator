@@ -57,12 +57,18 @@ h1{
   display: flex;
   align-items: center;
   justify-content: center;
-
+  transition-duration: 400ms;
   color: white;
   font-size: 20px;
   border-radius: 6px;
-  transition: .3s;
 }
+.op.loading {
+  transform: translate(-500%);
+}
+.num.loading{
+  transform: translate(-1000%);
+}
+
 #buttons > div:hover{
   background-color: whitesmoke;
   opacity: .7;
