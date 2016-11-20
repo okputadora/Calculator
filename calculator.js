@@ -8,7 +8,6 @@ var clearClicked = false;
 
 //number clicked
 function queu(id){
-
   console.log(operationComplete)
   if (operationComplete === true){
     // start over;
@@ -16,28 +15,30 @@ function queu(id){
     $("#operation").html("");
     $("#currentNumber").css("color", "whitesmoke");
     operationComplete = false;
-    operationSegment = "";
   }
   var num = $("#" + id).text();
   operationSegment += num;
   $("#currentNumber").html(operationSegment);
   $("#operation").append(num);
   lastId = "num";
+  clearClicked = false;
 
 }
 
 //operator clicked
 function op(id){
+  console.log("lastOP: " + lastId);
   $("#currentNumber").css("color", "whitesmoke");
-  console.log(lastId);
   if (lastId === "op"){
     return;
   }
   else{
+    console.log("in here");
     opp = $("#" + id).text();
     $("#currentNumber").html(opp);
-    if (operationComplete === false){
+    if (operationComplete === false && clearClicked === false){
       fullOperation.push(operationSegment);
+      clearClicked = false;
     }
 
     fullOperation.push(opp);
@@ -46,6 +47,7 @@ function op(id){
     operationSegment = "";
     lastId = "op";
     operationComplete = false;
+    clearClicked = false;
   }
 }
 // Math functions
@@ -84,38 +86,34 @@ function divide(a,b){return a/b;}
   });
 
   $(".op").click(function(){
-    clearClicked = false;
     op(this.id)
   });
 
   $("#ce").click(function(){
-    operationSegment = "";
     console.log(lastId);
+    // if we left the last number hangin' push it so
+    // that's the one we get rid of.
     if (lastId === "num" && clearClicked === false){
       fullOperation.push(operationSegment);
       lastId = "op";
     }
-    else if(lastId === "op"){
+    else if (lastId === "op"){
       lastId = "num";
     }
+    fullOperation.pop();
     console.log(fullOperation);
-    fullOperation.splice(-1);
-    console.log(lastId);
-    console.log(fullOperation);
-
-    // loop to create formatting with spaces
+    clearClicked = true;
+    // display results
     $("#operation").html("");
     for (var i in fullOperation){
-      $("#operation").append(fullOperation[i]);
-      $("#operation").append(" ");
+      $("#operation").append(fullOperation[i] + " ");
     }
-
-    $("#currentNumber").html(fullOperation[fullOperation.length - 1]);
+    $("#currentNumber").html(fullOperation[fullOperation.length -1]);
     if (fullOperation.length === 0){
       $("#currentNumber").html("0");
     }
+    operationSegment = "";
     clearClicked = true;
-    // operationSegment = "";
   });
 
   $("#ac").click(function(){
@@ -128,7 +126,6 @@ function divide(a,b){return a/b;}
 
   // solve
   $("#enter").click(function(){
-    clearClicked = false;
     fullOperation.push(operationSegment);
     console.log(fullOperation);
 
@@ -152,11 +149,23 @@ function divide(a,b){return a/b;}
       fullOperation.splice(0,3, num);
       console.log("after operation: " + fullOperation);
     }
+    if (fullOperation === "NaN"){
+      $("#currentNumber").html("E R R O R");
+      return;
+    }
     fullOperation[0] = fullOperation[0].toString();
+    if (fullOperation[0] === "NaN"){
+      $("#currentNumber").html("E R R O R");
+      //This is just the clear all function (abstract this out)
+      fullOperation = [];
+      $("#operation").html("");
+      return;
+    }
     $("#currentNumber").html(fullOperation);
     $("#currentNumber").css("color", "darksalmon");
     lastId = "num";
     operationComplete = true;
-    console.log(fullOperation)
+      operationSegment = "";
+    console.log("whats left after solving " +fullOperation)
   })
 });
