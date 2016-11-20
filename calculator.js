@@ -3,18 +3,29 @@ var operationSegment = "";
 var opp = "";
 var memory = "";
 varLastId = "op";
+var operationComplete = false;
 
 //number clicked
 function queu(id){
+  console.log(operationComplete)
+  if (operationComplete === true){
+    // start over;
+    fullOperation = [];
+    $("#operation").html("");
+    $("#currentNumber").css("color", "whitesmoke");
+    operationComplete = false;
+  }
   var num = $("#" + id).text();
   operationSegment += num;
   $("#currentNumber").html(operationSegment);
   $("#operation").append(num);
   lastId = "num";
+
 }
 
 //operator clicked
 function op(id){
+  $("#currentNumber").css("color", "whitesmoke");
   console.log(lastId);
   if (lastId === "op"){
     return;
@@ -22,11 +33,15 @@ function op(id){
   else{
     opp = $("#" + id).text();
     $("#currentNumber").html(opp);
-    fullOperation.push(operationSegment);
+    if (operationComplete === false){
+      fullOperation.push(operationSegment);
+    }
     fullOperation.push(opp);
+    console.log(fullOperation);
     $("#operation").append(" " + opp + " ");
     operationSegment = "";
     lastId = "op";
+    operationComplete = false;
   }
 }
 // Math functions
@@ -67,7 +82,8 @@ function divide(a,b){return a/b;}
 
   $("#ac").click(function(){
     operationSegment = "";
-    fullOperation = "";
+    fullOperation = [];
+    $("#operation").html("");
     $("#currentNumber").html("0");
   })
 
@@ -96,6 +112,11 @@ function divide(a,b){return a/b;}
       fullOperation.splice(0,3, num);
       console.log("after operation: " + fullOperation);
     }
+    fullOperation[0] = fullOperation[0].toString();
     $("#currentNumber").html(fullOperation);
+    $("#currentNumber").css("color", "darksalmon");
+    operationSegment = "";
+    operationComplete = true;
+    console.log(fullOperation)
   })
 });
