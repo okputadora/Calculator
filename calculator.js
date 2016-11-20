@@ -2,6 +2,7 @@ var fullOperation = [];
 var operationSegment = "";
 var opp = "";
 var memory = "";
+varLastId = "op";
 
 //number clicked
 function queu(id){
@@ -9,16 +10,24 @@ function queu(id){
   operationSegment += num;
   $("#currentNumber").html(operationSegment);
   $("#operation").append(num);
+  lastId = "num";
 }
 
 //operator clicked
 function op(id){
-  opp = $("#" + id).text();
-  $("#currentNumber").html(opp);
-  fullOperation.push(operationSegment);
-  fullOperation.push(opp);
-  $("#operation").append(" " + opp + " ");
-  operationSegment = "";
+  console.log(lastId);
+  if (lastId === "op"){
+    return;
+  }
+  else{
+    opp = $("#" + id).text();
+    $("#currentNumber").html(opp);
+    fullOperation.push(operationSegment);
+    fullOperation.push(opp);
+    $("#operation").append(" " + opp + " ");
+    operationSegment = "";
+    lastId = "op";
+  }
 }
 // Math functions
 function add(a,b){return a+b;}
