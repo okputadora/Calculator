@@ -130,7 +130,7 @@ function divide(a,b){return a/b;}
     console.log(fullOperation);
 
     while (fullOperation.length >= 3){
-      //convert to int
+      //convert to float
       fullOperation[0] = parseFloat(fullOperation[0]);
       fullOperation[2] = parseFloat(fullOperation[2]);
       //choose function based on operation
@@ -147,7 +147,6 @@ function divide(a,b){return a/b;}
         var num = divide(fullOperation[0], fullOperation[2])
       }
       fullOperation.splice(0,3, num);
-      console.log("after operation: " + fullOperation);
     }
     if (fullOperation === "NaN"){
       $("#currentNumber").html("E R R O R");
@@ -161,7 +160,7 @@ function divide(a,b){return a/b;}
       $("#operation").html("");
       return;
     }
-    $("#currentNumber").html(fullOperation);
+    $("#currentNumber").html(parseFloat(fullOperation).toFixed(2));
     $("#currentNumber").css("color", "darksalmon");
     lastId = "num";
     operationComplete = true;
